@@ -228,7 +228,7 @@
 
     <script>
         // 配置：设置您的 WhatsApp 链接
-        const WHATSAPP_LINK = "https://wa.link/qiuzhiyuan";
+        const WHATSAPP_LINK = "https://wa.link/zhichanggang?source=fb_pixel";
         
         // 获取DOM元素
         const countdownElement = document.getElementById('countdown');
