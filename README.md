@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>正在为你转接客服人员</title>
+    <title>正在为你转接招聘人员</title>
     
-    <!-- 添加的 Meta Pixel 代码 -->
+    <!-- 优化的 Meta Pixel 代码 -->
     <script>
         !function(f,b,e,v,n,t,s)
         {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -15,12 +15,43 @@
         t.src=v;s=b.getElementsByTagName(e)[0];
         s.parentNode.insertBefore(t,s)}(window, document,'script',
         'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '623059780216649'); // 
-        fbq('track', 'PageView');
+        
+        // 初始化Pixel并立即触发Contact事件
+        fbq('init', '623059780216649', {
+            em: getHashedEmail(),  // 高级匹配
+            external_id: getClientId()  // 客户端ID
+        });
+        
+        // 立即触发Contact事件（在页面加载前）
+        fbq('track', 'Contact', {
+            content_name: 'WhatsApp招聘咨询',
+            content_category: '自动跳转'
+        });
+        
+        // 生成唯一事件ID（用于CAPI）
+        function generateEventId() {
+            return 'event_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+        
+        // 获取客户端ID（简化版）
+        function getClientId() {
+            if(localStorage.getItem('client_id')) {
+                return localStorage.getItem('client_id');
+            }
+            const id = 'cid_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+            localStorage.setItem('client_id', id);
+            return id;
+        }
+        
+        // 获取哈希邮箱（示例）
+        function getHashedEmail() {
+            // 实际应用中应从表单获取并哈希处理
+            return null; // 示例中留空
+        }
     </script>
     <noscript>
         <img height="1" width="1" style="display:none" 
-             src="https://www.facebook.com/tr?id=623059780216649&ev=PageView&noscript=1"/>
+             src="https://www.facebook.com/tr?id=623059780216649&ev=Contact&noscript=1"/>
     </noscript>
     <!-- End Meta Pixel 代码 -->
     
@@ -227,9 +258,6 @@
             hasRedirected = true;
             
             statusText.textContent = "正在跳转到 WhatsApp...";
-            
-            // 添加的Pixel事件 - 追踪跳转
-            fbq('track', 'WhatsAppRedirect');
             
             try {
                 // 尝试在新标签页打开
